@@ -1,0 +1,655 @@
+/* Unit Pricing Test Page - Split Lease */
+/* Styled to match Bubble.io design patterns */
+
+:root {
+  /* Colors */
+  --primary-color: #4A90D9;
+  --primary-dark: #357ABD;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --warning-color: #ffc107;
+  --text-color: #333;
+  --text-muted: #6c757d;
+  --bg-color: #f8f9fa;
+  --white: #ffffff;
+  --border-color: #dee2e6;
+  --section-bg: #ffffff;
+  --header-bg: #2c3e50;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* Layout */
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.page-header {
+  background: var(--header-bg);
+  color: var(--white);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border-radius: var(--radius-md);
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-header p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+/* Sections */
+.section {
+  background: var(--section-bg);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.section h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: var(--spacing-md) 0 var(--spacing-sm);
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: var(--spacing-md);
+}
+
+.no-data {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--spacing-lg);
+  text-align: center;
+  background: var(--bg-color);
+  border-radius: var(--radius-sm);
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.15);
+}
+
+/* Listing Selector */
+.listing-selector .selected-listing-info {
+  background: var(--bg-color);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-md);
+}
+
+.listing-selector .info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.listing-selector .info-row:last-child {
+  border-bottom: none;
+}
+
+.listing-selector .info-row .label {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.listing-selector .info-row .value.valid {
+  color: var(--success-color);
+  font-weight: 600;
+}
+
+.listing-selector .info-row .value.invalid {
+  color: var(--error-color);
+  font-weight: 600;
+}
+
+/* Reservation Inputs */
+.reservation-inputs .inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.day-selector {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--bg-color);
+  border-radius: var(--radius-sm);
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-xs);
+  margin: var(--spacing-md) 0;
+}
+
+.day-cell {
+  padding: var(--spacing-sm);
+  text-align: center;
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.day-cell.selected {
+  background: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+.selection-summary {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Rates Cards */
+.rates-grid,
+.multipliers-grid,
+.markups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.rate-card,
+.multiplier-card,
+.markup-card {
+  background: var(--bg-color);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.rate-card h4,
+.multiplier-card h4,
+.markup-card h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.rate-card .rate-value,
+.multiplier-card .value,
+.markup-card .value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: var(--spacing-sm) 0;
+}
+
+.rate-card .rate-label,
+.rate-card .rate-formula {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Value Rows */
+.value-row,
+.calc-row,
+.config-row,
+.setting-row,
+.guideline-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.value-row:last-child,
+.calc-row:last-child,
+.config-row:last-child,
+.setting-row:last-child,
+.guideline-row:last-child {
+  border-bottom: none;
+}
+
+.value-row .label,
+.calc-row .label,
+.config-row .label,
+.setting-row .label,
+.guideline-row .label {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.value-row .value,
+.calc-row .value,
+.config-row .value,
+.setting-row .value,
+.guideline-row .value {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.value-row .formula {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Markup Formula */
+.markup-formula {
+  background: #f0f7ff;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-md);
+  border-left: 3px solid var(--primary-color);
+}
+
+.markup-formula .formula-text {
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+}
+
+.markup-formula .formula-detail {
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Host Prices Grid */
+.host-prices-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.host-prices-grid .row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.host-prices-grid .row.nightly-rates {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.price-item {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-sm);
+  background: var(--bg-color);
+  border-radius: var(--radius-sm);
+}
+
+.price-item .label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.price-item .value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Price List Table */
+.table-header-info {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--bg-color);
+  border-radius: var(--radius-sm);
+}
+
+.table-header-info .info-item {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.table-header-info .info-item .label {
+  color: var(--text-muted);
+}
+
+.table-header-info .info-item .value {
+  font-weight: 600;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.price-table th,
+.price-table td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: right;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.price-table th {
+  background: var(--header-bg);
+  color: var(--white);
+  font-weight: 600;
+  text-align: right;
+}
+
+.price-table th:first-child,
+.price-table td:first-child {
+  text-align: left;
+}
+
+.price-table tr:hover {
+  background: var(--bg-color);
+}
+
+.price-table tr.full-week {
+  background: #e8f5e9;
+}
+
+.price-table .night-cell {
+  font-weight: 600;
+}
+
+.price-table .price-cell {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+/* Buttons */
+.action-btn,
+.run-checks-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--primary-color);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover,
+.run-checks-btn:hover {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+.action-btn.primary {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+.action-btn.primary:hover {
+  background: var(--primary-dark);
+}
+
+/* Workflow Checks */
+.checks-table {
+  margin-top: var(--spacing-md);
+}
+
+.checks-header,
+.checks-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 100px;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.checks-header {
+  background: var(--header-bg);
+  color: var(--white);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  font-weight: 600;
+}
+
+.checks-row {
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.checks-row .label-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.checks-row .wf-label {
+  font-weight: 600;
+}
+
+.checks-row .formula-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.checks-row .value-col {
+  font-weight: 600;
+  text-align: right;
+}
+
+.checks-row .status-col {
+  text-align: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.checks-row .status-col.match {
+  background: #e8f5e9;
+  color: var(--success-color);
+}
+
+.checks-row .status-col.mismatch {
+  background: #ffebee;
+  color: var(--error-color);
+}
+
+.calculation-summary {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--bg-color);
+  border-radius: var(--radius-sm);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-sm);
+}
+
+.summary-item .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.summary-item .formula {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Validation */
+.validation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.validation-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+}
+
+.validation-item.valid {
+  background: #e8f5e9;
+}
+
+.validation-item.invalid {
+  background: #ffebee;
+}
+
+.validation-item .indicator {
+  font-size: 18px;
+}
+
+.validation-item.valid .indicator {
+  color: var(--success-color);
+}
+
+.validation-item.invalid .indicator {
+  color: var(--error-color);
+}
+
+.validation-item .label {
+  flex: 1;
+  font-size: 13px;
+}
+
+.validation-item .status {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.all-good-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.all-good-indicator.valid {
+  background: #c8e6c9;
+  color: var(--success-color);
+}
+
+.all-good-indicator.invalid {
+  background: #ffcdd2;
+  color: var(--error-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-container {
+    padding: var(--spacing-md);
+  }
+
+  .rates-grid,
+  .multipliers-grid,
+  .markups-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .host-prices-grid .row.nightly-rates {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .checks-header,
+  .checks-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+  }
+
+  .price-table {
+    font-size: 11px;
+  }
+}
