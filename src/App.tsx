@@ -8,7 +8,9 @@ import { ListingSelector } from './components/ListingSelector';
 import { ReservationInputs } from './components/ReservationInputs';
 import { ProratedRatesSection } from './components/ProratedRatesSection';
 import { MarkupsSection } from './components/MarkupsSection';
+import { FinalPricingSection } from './components/FinalPricingSection';
 import { HostPricesSection } from './components/HostPricesSection';
+import { HostGuidelinesSection } from './components/HostGuidelinesSection';
 import { ZATConfigSection } from './components/ZATConfigSection';
 import { PriceListTable } from './components/PriceListTable';
 import { WorkflowFormulaChecks } from './components/WorkflowFormulaChecks';
@@ -18,11 +20,11 @@ import { SLUnitSettings } from './components/SLUnitSettings';
 import './styles/index.css';
 
 function App() {
-  // State
+  // State - Default values match documentation examples
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
-  const [selectedNights, setSelectedNights] = useState(7);
-  const [reservationSpanWeeks, setReservationSpanWeeks] = useState(4);
+  const [selectedNights, setSelectedNights] = useState(4); // Documentation example uses 4 nights
+  const [reservationSpanWeeks, setReservationSpanWeeks] = useState(17); // Documentation example: 17 weeks
   const [guestPattern, setGuestPattern] = useState<WeeksOffered>('Every week');
   const [comparisonResults, setComparisonResults] = useState<Record<string, PriceComparisonResult>>({});
 
@@ -99,6 +101,9 @@ function App() {
           Unit testing environment for pricing calculations. Compare Listing Schedule Selector,
           Pricing List Structure, and direct formulas to ensure consistency.
         </p>
+        <p className="header-url">
+          Live URL: app.split.lease/version-live/z-pricing-unit-test?debug_mode=true
+        </p>
       </header>
 
       {/* Section 1: Listing Selection */}
@@ -110,7 +115,7 @@ function App() {
         onSearchChange={setSearchQuery}
       />
 
-      {/* Section 2 & 3: Reservation Parameters */}
+      {/* Section 2 & 3: Reservation Parameters (Day Selector + Duration) */}
       <ReservationInputs
         selectedNights={selectedNights}
         onNightsChange={setSelectedNights}
@@ -120,33 +125,45 @@ function App() {
         onPatternChange={setGuestPattern}
       />
 
-      {/* Section 2: Prorated Nightly Rates */}
+      {/* Section 4: Prorated Nightly Rates */}
       <ProratedRatesSection
         calculatedValues={calculatedValues}
         avgWeeklyPrice={avgWeeklyPrice}
         monthlyAvgNightlyPrice={monthlyAvgNightlyPrice}
       />
 
-      {/* Section 3, 4, 5: Multipliers, Markups, Reservation Span */}
+      {/* Section 5 & 6: Rental Type Multipliers & Markups */}
       <MarkupsSection
         calculatedValues={calculatedValues}
         globalConfig={globalConfig}
         listing={selectedListing}
       />
 
-      {/* Section 6, 7, 8: Host Prices, Guidelines, Unique Settings */}
+      {/* Section 7: Final Pricing Calculations */}
+      <FinalPricingSection
+        calculatedValues={calculatedValues}
+        listing={selectedListing}
+      />
+
+      {/* Section 8: Host Prices Input */}
       <HostPricesSection listing={selectedListing} />
 
-      {/* Section 9: SL Unit Settings */}
+      {/* Section 9: Host Guidelines */}
+      <HostGuidelinesSection
+        listing={selectedListing}
+        globalConfig={globalConfig}
+      />
+
+      {/* Section 10: SL Unit Settings */}
       <SLUnitSettings calculatedValues={calculatedValues} />
 
-      {/* Section 10: Validation Flags */}
+      {/* Section 11: Validation Flags */}
       <ValidationSection validationFlags={validationFlags} />
 
-      {/* Section 11: ZAT Config */}
+      {/* Section 12: ZAT-Price Configuration */}
       <ZATConfigSection globalConfig={globalConfig} />
 
-      {/* Section 12: Price List Table */}
+      {/* Section 13: Price List Table */}
       <PriceListTable
         listing={selectedListing}
         globalConfig={globalConfig}

@@ -144,21 +144,24 @@ export class PricingCalculator {
 
   /**
    * Calculate 4-week rent
-   * Formula: listing_nightly_price * nights_per_week * 4
+   * Formula: listing_nightly_price * nights_per_week * actual_weeks_in_4_week_period
+   * Documentation: 4 Week Rent = Nightly × Nights × Actual Weeks
    */
   calculateFourWeekRent(): number {
     const nightlyPrice = this.calculateListingNightlyPrice();
-    return nightlyPrice * this.selectedNights * 4;
+    const actualWeeks = this.calculateActualWeeksDuring4Week();
+    return nightlyPrice * this.selectedNights * actualWeeks;
   }
 
   /**
    * Calculate total reservation price
-   * Formula: listing_nightly_price * total_nights_in_reservation
+   * Formula: listing_nightly_price * nights_per_week * actual_weeks_during_reservation
+   * Documentation: Total Reservation Price = Nightly × Nights × Total Actual Weeks
    */
   calculateTotalReservationPrice(): number {
     const nightlyPrice = this.calculateListingNightlyPrice();
-    const totalNights = this.selectedNights * this.reservationSpanWeeks;
-    return nightlyPrice * totalNights;
+    const actualWeeks = this.calculateActualWeeksDuringReservationSpan();
+    return nightlyPrice * this.selectedNights * actualWeeks;
   }
 
   /**
@@ -170,35 +173,57 @@ export class PricingCalculator {
   }
 
   /**
-   * Calculate actual weeks during reservation span
+   * Calculate actual weeks during reservation span based on pattern
+   * From documentation - Pattern Impact on Actual Weeks:
+   * | Pattern                  | Weeks in 4 | Weeks in 8 | Weeks in 12 | Weeks in 17 |
+   * | Every week               | 4          | 8          | 12          | 17          |
+   * | Alternating weeks        | 2          | 4          | 6           | 9           |
+   * | Two on, two off          | 2          | 4          | 6           | 9           |
+   * | One on, one off          | 2          | 4          | 6           | 9           |
+   * | One on, three off        | 1          | 2          | 3           | 5           |
    */
   calculateActualWeeksDuringReservationSpan(): number {
-    // This depends on the weeks offered pattern
+    const weeks = this.reservationSpanWeeks;
+
     switch (this.listing.weeksOffered) {
       case 'Every week':
-        return this.reservationSpanWeeks;
+        return weeks;
+
       case 'Alternating weeks':
-        return Math.ceil(this.reservationSpanWeeks / 2);
-      case 'First and third':
-      case 'Second and fourth':
-        return Math.ceil(this.reservationSpanWeeks / 2);
+      case 'Two weeks on, two weeks off':
+      case 'One week on, one week off':
+        // Pattern: every other week, so approximately half (rounded up for odd weeks)
+        return Math.ceil(weeks / 2);
+
+      case 'One week on, three weeks off':
+        // Pattern: 1 week in every 4
+        return Math.ceil(weeks / 4);
+
       default:
-        return this.reservationSpanWeeks;
+        return weeks;
     }
   }
 
   /**
-   * Calculate actual weeks during 4-week period
+   * Calculate actual weeks during 4-week period based on pattern
+   * From documentation:
+   * - Every week: 4 weeks
+   * - Alternating/Two-on-two-off/One-on-one-off: 2 weeks
+   * - One-on-three-off: 1 week
    */
   calculateActualWeeksDuring4Week(): number {
     switch (this.listing.weeksOffered) {
       case 'Every week':
         return 4;
+
       case 'Alternating weeks':
+      case 'Two weeks on, two weeks off':
+      case 'One week on, one week off':
         return 2;
-      case 'First and third':
-      case 'Second and fourth':
-        return 2;
+
+      case 'One week on, three weeks off':
+        return 1;
+
       default:
         return 4;
     }

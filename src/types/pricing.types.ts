@@ -1,8 +1,13 @@
 // Rental Type Option Set
 export type RentalType = 'Monthly' | 'Weekly' | 'Nightly';
 
-// Weekly Selection Options
-export type WeeksOffered = 'Every week' | 'Alternating weeks' | 'First and third' | 'Second and fourth';
+// Weekly Selection Options (Guest Pattern)
+export type WeeksOffered =
+  | 'Every week'
+  | 'Alternating weeks'
+  | 'Two weeks on, two weeks off'
+  | 'One week on, one week off'
+  | 'One week on, three weeks off';
 
 // Days of week
 export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
