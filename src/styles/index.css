@@ -50,11 +50,13 @@ body {
   line-height: 1.5;
 }
 
-/* Layout */
+/* Layout - Page dimensions from documentation: 1500px fixed-width */
 .page-container {
-  max-width: 1400px;
+  width: 1500px;
+  max-width: 100%;
   margin: 0 auto;
   padding: var(--spacing-lg);
+  background: var(--white);
 }
 
 .page-header {
@@ -833,6 +835,183 @@ select:focus {
 
 .final-pricing .breakdown-table td:last-child {
   text-align: right;
+}
+
+/* Section Header with Reset Button */
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.section-header-row h3 {
+  margin-bottom: 0;
+}
+
+.reset-btn {
+  background: var(--error-color);
+  color: var(--white);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.reset-btn:hover {
+  background: #c82333;
+}
+
+/* Input with Set Button */
+.input-with-button {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.input-with-button select,
+.input-with-button input {
+  flex: 1;
+}
+
+.set-btn {
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.set-btn:hover {
+  background: var(--primary-dark);
+}
+
+/* Listing Info Grid */
+.selected-listing-info .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.selected-listing-info h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+  font-size: 14px;
+}
+
+.info-row .mono {
+  font-family: monospace;
+  font-size: 12px;
+  background: var(--bg-color);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.info-row .rental-type-badge {
+  background: var(--primary-color);
+  color: var(--white);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+}
+
+/* SL Unit Settings - Two Column Layout */
+.sl-unit-settings .settings-grid.two-column {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.sl-unit-settings .settings-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sl-unit-settings .setting-row.highlight {
+  background: var(--primary-light);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary-color);
+}
+
+/* Workflow Checks Actions */
+.workflow-checks .checks-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.workflow-checks .overall-status {
+  font-weight: 600;
+  font-size: 14px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+
+.workflow-checks .overall-status.match {
+  background: #e8f5e9;
+  color: var(--success-color);
+}
+
+.workflow-checks .overall-status.mismatch {
+  background: #ffebee;
+  color: var(--error-color);
+}
+
+.workflow-checks .run-checks-btn.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* Double Check Section */
+.double-check-section {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: #f0f7ff;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary-color);
+}
+
+.double-check-section h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.double-check-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.double-check-values .check-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: 13px;
+}
+
+.double-check-values .check-item .label {
+  color: var(--text-muted);
+}
+
+.double-check-values .check-item .value {
+  font-weight: 600;
+}
+
+/* Section Description */
+.section-desc {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: var(--spacing-md);
 }
 
 /* Section 9: Host Guidelines */

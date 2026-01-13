@@ -19,12 +19,25 @@ import { SLUnitSettings } from './components/SLUnitSettings';
 
 import './styles/index.css';
 
+/**
+ * Z-PRICING-UNIT-TEST
+ * PAGE NAME: z-pricing-unit-test
+ * PAGE TITLE: Unit Schedule Selector
+ *
+ * Primary Purpose: Comprehensive testing and validation tool for the Split Lease pricing engine.
+ * - Select any listing in the system
+ * - Test different reservation patterns and durations
+ * - Calculate pricing across three rental types: Monthly, Weekly, and Nightly
+ * - Validate markups, discounts, and host compensation
+ * - Compare workflow-generated prices against formula-based calculations
+ * - Identify data inconsistencies or pricing errors
+ */
 function App() {
   // State - Default values match documentation examples
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedListing, setSelectedListing] = useState<Listing | null>(null);
   const [selectedNights, setSelectedNights] = useState(4); // Documentation example uses 4 nights
-  const [reservationSpanWeeks, setReservationSpanWeeks] = useState(17); // Documentation example: 17 weeks
+  const [reservationSpanWeeks, setReservationSpanWeeks] = useState(13); // 13 weeks (3 months) common default
   const [guestPattern, setGuestPattern] = useState<WeeksOffered>('Every week');
   const [comparisonResults, setComparisonResults] = useState<Record<string, PriceComparisonResult>>({});
 
@@ -85,12 +98,28 @@ function App() {
 
   const handleUpdateStartingNightlyPrice = () => {
     console.log('Update Starting Nightly Price clicked');
-    alert('API call: CORE-Find lowest nightly price');
+    // Workflow: B: Run Starting Nightly Price is clicked
+    alert('Workflow triggered: B: Run Starting Nightly Price\nAPI call: CORE-Find lowest nightly price');
   };
 
   const handleUpdatePriceList = () => {
     console.log('Update Price List clicked');
-    alert('API call: CORE-save_pricing_robert');
+    // Workflow: B: Run Price List is clicked
+    // Action 1: Schedule API Workflow - save_pricing_robert
+    // Action 2: Add a pause before next action
+    // Action 3: AirAlert - Standard (display confirmation)
+    alert('Workflow triggered: B: Run Price List is clicked\nScheduling API Workflow: save_pricing_robert\nPausing for backend processing...\nPrice list calculation complete!');
+  };
+
+  // Reset handler - Workflow: I: Remove is clicked - Reset Input field
+  const handleReset = () => {
+    setSelectedListing(null);
+    setSearchQuery('');
+    setSelectedNights(4);
+    setReservationSpanWeeks(13);
+    setGuestPattern('Every week');
+    setComparisonResults({});
+    console.log('Reset triggered: I: Remove is clicked - Reset Input field');
   };
 
   return (
@@ -113,6 +142,7 @@ function App() {
         onSelect={setSelectedListing}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        onReset={handleReset}
       />
 
       {/* Section 2 & 3: Reservation Parameters (Day Selector + Duration) */}
@@ -154,8 +184,8 @@ function App() {
         globalConfig={globalConfig}
       />
 
-      {/* Section 10: SL Unit Settings */}
-      <SLUnitSettings calculatedValues={calculatedValues} />
+      {/* Listing Unique Settings */}
+      <SLUnitSettings calculatedValues={calculatedValues} listing={selectedListing} />
 
       {/* Section 11: Validation Flags */}
       <ValidationSection validationFlags={validationFlags} />

@@ -97,32 +97,71 @@ export const ReservationInputs: React.FC<ReservationInputsProps> = ({
       <div className="inputs-grid">
         <div className="form-group">
           <label>Reservation Span (weeks):</label>
-          <select
-            value={reservationSpanWeeks}
-            onChange={(e) => onReservationSpanChange(Number(e.target.value))}
-            className="weeks-dropdown"
-          >
-            {weekOptions.map((w) => (
-              <option key={w} value={w}>
-                {w} weeks
-              </option>
-            ))}
-          </select>
+          <div className="input-with-button">
+            <select
+              value={reservationSpanWeeks}
+              onChange={(e) => onReservationSpanChange(Number(e.target.value))}
+              className="weeks-dropdown"
+            >
+              {weekOptions.map((w) => (
+                <option key={w} value={w}>
+                  {w} weeks {w === 13 ? '(3 months)' : w === 26 ? '(6 months)' : ''}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className="set-btn"
+              onClick={() => console.log('Reservation span set:', reservationSpanWeeks)}
+            >
+              Set
+            </button>
+          </div>
         </div>
 
         <div className="form-group">
-          <label>Guest Pattern:</label>
-          <select
-            value={guestPattern}
-            onChange={(e) => onPatternChange(e.target.value as WeeksOffered)}
-            className="pattern-dropdown"
-          >
-            {patternOptions.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
-            ))}
-          </select>
+          <label>Enter # of Weeks (manual):</label>
+          <div className="input-with-button">
+            <input
+              type="number"
+              min="1"
+              max="52"
+              value={reservationSpanWeeks}
+              onChange={(e) => onReservationSpanChange(Number(e.target.value) || 6)}
+              className="weeks-input"
+            />
+            <button
+              type="button"
+              className="set-btn"
+              onClick={() => console.log('Manual weeks set:', reservationSpanWeeks)}
+            >
+              Set
+            </button>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Guest Desired Pattern:</label>
+          <div className="input-with-button">
+            <select
+              value={guestPattern}
+              onChange={(e) => onPatternChange(e.target.value as WeeksOffered)}
+              className="pattern-dropdown"
+            >
+              {patternOptions.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className="set-btn"
+              onClick={() => console.log('Guest pattern set:', guestPattern)}
+            >
+              Set
+            </button>
+          </div>
         </div>
       </div>
 

@@ -8,6 +8,7 @@ interface ListingSelectorProps {
   onSelect: (listing: Listing | null) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  onReset?: () => void;
 }
 
 export const ListingSelector: React.FC<ListingSelectorProps> = ({
@@ -16,10 +17,29 @@ export const ListingSelector: React.FC<ListingSelectorProps> = ({
   onSelect,
   searchQuery,
   onSearchChange,
+  onReset,
 }) => {
+  const handleReset = () => {
+    onSelect(null);
+    onSearchChange('');
+    if (onReset) onReset();
+  };
+
   return (
     <div className="section listing-selector">
-      <h3>Step 1 - Listing Selection</h3>
+      <div className="section-header-row">
+        <h3>Section 1: Listing Selection</h3>
+        {selectedListing && (
+          <button
+            type="button"
+            className="reset-btn"
+            onClick={handleReset}
+            title="Reset Input"
+          >
+            ✕ Remove
+          </button>
+        )}
+      </div>
 
       <div className="form-group">
         <label>Search Listing using ID, host email, Host or Listing Name:</label>
@@ -27,13 +47,13 @@ export const ListingSelector: React.FC<ListingSelectorProps> = ({
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search..."
+          placeholder="Search by ID, host email, host name, or listing name..."
           className="search-input"
         />
       </div>
 
       <div className="form-group">
-        <label>D: listing selector</label>
+        <label>Choose a Listing...</label>
         <select
           value={selectedListing?.id || ''}
           onChange={(e) => {
@@ -42,7 +62,7 @@ export const ListingSelector: React.FC<ListingSelectorProps> = ({
           }}
           className="listing-dropdown"
         >
-          <option value="">Select a listing...</option>
+          <option value="">Choose a Listing...</option>
           {listings.map((listing) => (
             <option key={listing.id} value={listing.id}>
               {formatListingCaption(
@@ -57,27 +77,42 @@ export const ListingSelector: React.FC<ListingSelectorProps> = ({
 
       {selectedListing && (
         <div className="selected-listing-info">
-          <div className="info-row">
-            <span className="label">Selected:</span>
-            <span className="value">{selectedListing.name}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">ID:</span>
-            <span className="value">{selectedListing.id}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Modified:</span>
-            <span className="value">{formatDate(selectedListing.modifiedDate)}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Rental Type:</span>
-            <span className="value">{selectedListing.rentalType}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Pricing List:</span>
-            <span className={`value ${selectedListing.pricingList ? 'valid' : 'invalid'}`}>
-              {selectedListing.pricingList ? 'Yes' : 'No'}
-            </span>
+          <h4>Listing Schedule Selector's Listing Data</h4>
+          <div className="info-grid">
+            <div className="info-row">
+              <span className="label">Listing Name:</span>
+              <span className="value">{selectedListing.name}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Unique ID:</span>
+              <span className="value mono">{selectedListing.id}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Host Comp Style:</span>
+              <span className="value rental-type-badge">{selectedListing.rentalType}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Weeks Offered:</span>
+              <span className="value">{selectedListing.weeksOffered}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Modified Date:</span>
+              <span className="value">{formatDate(selectedListing.modifiedDate)}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Pricing List Exists:</span>
+              <span className={`value ${selectedListing.pricingList ? 'valid' : 'invalid'}`}>
+                {selectedListing.pricingList ? 'YES' : 'NO'}
+              </span>
+            </div>
+            <div className="info-row">
+              <span className="label"># of Nights Available:</span>
+              <span className="value">{selectedListing.numberOfNightsAvailable}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Host Email:</span>
+              <span className="value">{selectedListing.hostEmail || 'N/A'}</span>
+            </div>
           </div>
         </div>
       )}

@@ -8,8 +8,11 @@ interface HostGuidelinesSectionProps {
 }
 
 /**
- * Section 9: Host Guidelines
- * Shows recommended/historical pricing guidelines for hosts
+ * Host Guidelines Section
+ * Shows host-configured constraints and requirements from documentation:
+ * - Minimum/Maximum Nights Desired by Host
+ * - Minimum/Maximum Days Desired by Host
+ * - Min/Max Desired Reservation Term (Weeks)
  */
 export const HostGuidelinesSection: React.FC<HostGuidelinesSectionProps> = ({
   listing,
@@ -18,15 +21,15 @@ export const HostGuidelinesSection: React.FC<HostGuidelinesSectionProps> = ({
   if (!listing) {
     return (
       <div className="section host-guidelines">
-        <h3>Section 9: Host Guidelines</h3>
+        <h3>Host Guidelines</h3>
         <p className="no-data">Select a listing to view host guidelines</p>
       </div>
     );
   }
 
-  // Calculate suggested prices based on config
-  const suggestedMinNightly = globalConfig.minPricePerNight;
-  const suggestedMaxNightly = globalConfig.maxPricePerNight;
+  // Calculate days from nights (days = nights + 1)
+  const minDays = listing.minimumNights + 1;
+  const maxDays = listing.maximumNights + 1;
 
   // Calculate weekly equivalent from monthly
   const monthlyToWeekly = listing.monthlyHostRate / 4.3;
@@ -34,21 +37,62 @@ export const HostGuidelinesSection: React.FC<HostGuidelinesSectionProps> = ({
 
   return (
     <div className="section host-guidelines">
-      <h3>Section 9: Host Guidelines</h3>
+      <h3>Host Guidelines</h3>
 
       <div className="guidelines-grid">
+        {/* Night Constraints */}
         <div className="guideline-card">
-          <h4>Price Range Guidelines</h4>
+          <h4>Nights Desired by Host</h4>
           <div className="guideline-row">
-            <span className="label">Minimum Nightly:</span>
-            <span className="value">{formatCurrency(suggestedMinNightly)}</span>
+            <span className="label">Minimum Nights:</span>
+            <span className="value">{listing.minimumNights}</span>
           </div>
           <div className="guideline-row">
-            <span className="label">Maximum Nightly:</span>
-            <span className="value">{formatCurrency(suggestedMaxNightly)}</span>
+            <span className="label">Maximum Nights:</span>
+            <span className="value">{listing.maximumNights}</span>
           </div>
         </div>
 
+        {/* Day Constraints */}
+        <div className="guideline-card">
+          <h4>Days Desired by Host</h4>
+          <div className="guideline-row">
+            <span className="label">Minimum Days:</span>
+            <span className="value">{minDays}</span>
+          </div>
+          <div className="guideline-row">
+            <span className="label">Maximum Days:</span>
+            <span className="value">{maxDays}</span>
+          </div>
+        </div>
+
+        {/* Week Constraints */}
+        <div className="guideline-card">
+          <h4>Reservation Term (Weeks)</h4>
+          <div className="guideline-row">
+            <span className="label">Min Desired:</span>
+            <span className="value">{listing.minimumWeeks} weeks</span>
+          </div>
+          <div className="guideline-row">
+            <span className="label">Max Desired:</span>
+            <span className="value">{listing.maximumWeeks} weeks</span>
+          </div>
+        </div>
+
+        {/* Month Constraints */}
+        <div className="guideline-card">
+          <h4>Reservation Term (Months)</h4>
+          <div className="guideline-row">
+            <span className="label">Min Months:</span>
+            <span className="value">{listing.minimumMonths}</span>
+          </div>
+          <div className="guideline-row">
+            <span className="label">Max Months:</span>
+            <span className="value">{listing.maximumMonths}</span>
+          </div>
+        </div>
+
+        {/* Rate Equivalents */}
         <div className="guideline-card">
           <h4>Rate Equivalents</h4>
           <div className="guideline-row">
@@ -61,47 +105,28 @@ export const HostGuidelinesSection: React.FC<HostGuidelinesSectionProps> = ({
           </div>
         </div>
 
+        {/* Rental Configuration */}
         <div className="guideline-card">
-          <h4>Rental Type</h4>
+          <h4>Rental Configuration</h4>
           <div className="guideline-row">
-            <span className="label">Current Type:</span>
+            <span className="label">Host Comp Style:</span>
             <span className="value rental-type">{listing.rentalType}</span>
           </div>
           <div className="guideline-row">
-            <span className="label">Week Pattern:</span>
+            <span className="label">Weeks Offered:</span>
             <span className="value">{listing.weeksOffered}</span>
-          </div>
-        </div>
-
-        <div className="guideline-card">
-          <h4>Stay Constraints</h4>
-          <div className="guideline-row">
-            <span className="label">Min Nights:</span>
-            <span className="value">{listing.minimumNights}</span>
-          </div>
-          <div className="guideline-row">
-            <span className="label">Max Nights:</span>
-            <span className="value">{listing.maximumNights}</span>
-          </div>
-          <div className="guideline-row">
-            <span className="label">Min Weeks:</span>
-            <span className="value">{listing.minimumWeeks}</span>
-          </div>
-          <div className="guideline-row">
-            <span className="label">Max Weeks:</span>
-            <span className="value">{listing.maximumWeeks}</span>
           </div>
         </div>
       </div>
 
       {/* Pricing recommendations based on rental type */}
       <div className="pricing-recommendations">
-        <h4>Pricing Recommendations</h4>
+        <h4>Pricing Model Information</h4>
         <div className="recommendation-text">
           {listing.rentalType === 'Monthly' && (
             <p>
               For monthly rentals, the prorated nightly rate is calculated as:
-              <strong> Monthly Rate ({formatCurrency(listing.monthlyHostRate)}) ÷ 31 × 7 ÷ Selected Nights</strong>.
+              <strong> Monthly Rate ({formatCurrency(listing.monthlyHostRate)}) ÷ {globalConfig.avgDaysPerMonth} × 7 ÷ Selected Nights</strong>.
               This ensures consistent weekly pricing regardless of month length.
             </p>
           )}
@@ -109,13 +134,13 @@ export const HostGuidelinesSection: React.FC<HostGuidelinesSectionProps> = ({
             <p>
               For weekly rentals, the prorated nightly rate is calculated as:
               <strong> Weekly Rate ({formatCurrency(listing.weeklyHostRate)}) ÷ Selected Nights</strong>.
-              The unused nights discount (3% per night) incentivizes longer stays.
+              The unused nights discount ({(globalConfig.unusedNightsDiscountMultiplier * 100).toFixed(0)}% per night) incentivizes longer stays.
             </p>
           )}
           {listing.rentalType === 'Nightly' && (
             <p>
               For nightly rentals, the host rate is applied directly with the
-              <strong> 17% site markup</strong>. Nightly listings typically command premium rates
+              <strong> {(globalConfig.overallSiteMarkup * 100).toFixed(0)}% site markup</strong>. Nightly listings typically command premium rates
               due to their flexibility.
             </p>
           )}
